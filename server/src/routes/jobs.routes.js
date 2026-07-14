@@ -1,14 +1,7 @@
 import { Router } from "express"
+import { getAllJobs } from "../controller/jobs.contoller.js"
 
 const router = Router()
-router.get("/", (req, res) =>
-    res.json(
-        {
-            success: true,
-            message: "jobs fetched Succesfully",
-            jobs: []
-        }
-    )
-);
+router.get("/", getAllJobs);
 
 export default router
