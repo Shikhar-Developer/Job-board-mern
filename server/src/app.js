@@ -1,5 +1,6 @@
 import express from "express"
 import router from "./routes/jobs.routes.js"
+import errorHandler from "../middleware/error.middleware.js"
 
 const app = express()
 
@@ -11,5 +12,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/jobs", router);
+app.use(errorHandler);
 
 export default app
