@@ -1,4 +1,5 @@
 import express from "express"
+import router from "./routes/jobs.routes.js"
 
 const app = express()
 
@@ -7,6 +8,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/", (req, res) => res.send("Server started!"))
+app.use("/api/jobs", router);
 
 export default app
