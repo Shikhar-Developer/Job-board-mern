@@ -9,4 +9,4 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.listen(PORT, () => console.log(`Started Server Succesfully at http://localhost: ${PORT}`));
+app.listen(PORT, () => console.log(`Started Server Succesfully at http://localhost:${PORT}`));
