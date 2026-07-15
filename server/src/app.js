@@ -1,5 +1,5 @@
 import express from "express"
-import router from "./routes/jobs.routes.js"
+import jobRouter from "./routes/jobs.routes.js"
 import authRouter from "./routes/auth.routes.js"
 import errorHandler from "./middleware/error.middleware.js"
 
@@ -12,7 +12,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api/jobs", router);
+app.use("/api/jobs", jobRouter);
 app.use("/api/auth", authRouter);
 app.use(errorHandler);
 

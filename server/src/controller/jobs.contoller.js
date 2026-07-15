@@ -69,8 +69,8 @@ export const getAllJobs = async (req, res) => {
 
 export const updateJob = async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id)
-        if (!job) {
+        const currentJob = await Job.findById(req.params.id)
+        if (!currentJob) {
             return res.status(404).json({
                 success: true,
                 message: "No user is found"
