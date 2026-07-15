@@ -202,3 +202,43 @@ export const rejectApplication = async (req, res) => {
         })
     }
 }
+
+
+export const withdrawApplication = async (req, res) => {
+    try {
+        const { applicationId } = req.params;
+        const application = await Application.findById(applicationId);
+        if (!application) {
+            return res, status(404).json({
+                success: false,
+                message: "Application not found!"
+            })
+        }
+        if (application.candidate.toString() != req.user._id) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied"
+            })
+        }
+
+        if (application.status != "PENDING") {
+            return res.status(400).json({
+                success: false,
+                message: "Application in process!"
+            })
+        }
+
+        await application.deleteOne();
+
+        res.staus(200).json({
+            success: true,
+            message: "Application Withdrawn Successfully"
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal Server Error"
+        })
+    }
+}
