@@ -46,7 +46,7 @@ export const getAllJobs = async (req, res) => {
 
         const skip = (pageNumber - 1) * pageSize;
         const totalJobs = await Job.countDocuments(filter);
-        const jobs = await Job.find(filter).sort(sortOptions).skip(skip).limit(limit);
+        const jobs = await Job.find(filter).sort(sortOptions).skip(skip).limit(pageSize);
         res.status(200).json(
             {
                 success: true,

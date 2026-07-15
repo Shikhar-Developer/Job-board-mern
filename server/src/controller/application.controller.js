@@ -45,3 +45,34 @@ export const applyForJob = async (req, res) => {
 
 
 }
+
+export const getMyApplication = async (req, res) => {
+    try {
+        const { page, limit } = req.query;
+
+        const pageNumber = Number(page);
+        const pageSize = Number(limit)
+        const skip = (pageNumber - 1) * pageSize
+
+        const totalPages = await Application.countDocuments({ candidate: req.user._id });
+        const applications = await Application.find({ candidate: req.user._id }).sort({ createdAt: -1 }).skip(skip).limit(pageSize).populate({
+            path: "job",
+            select: "title company location salary employmentType",
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Job Applications found",
+            page: pageNumber,
+            limit: pageSize,
+            totalPages: totalPages,
+            data: applications
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: error.message || "Internal Server Error"
+        })
+    }
+}
