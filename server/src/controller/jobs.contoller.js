@@ -3,32 +3,40 @@ import Job from "../models/Jobs.js"
 
 export const getAllJobs = async (req, res) => {
     //Gives back a arraylist of jobs.
-    const { search, location, employmentType } = req.query;
+    const { search, location, employmentType, page, limit } = req.query;
     let filter = {};
-    if (search)
+    if (search?.trim())
         filter.$or = [
             { title: { $regex: search.trim(), $options: "i" } },
             { company: { $regex: search.trim(), $options: "i" } }
         ];
 
-    if (location) {
+    if (location?.trim()) {
         filter.location = {
             $regex: location.trim(),
             $options: "i"
         };
     }
 
-    if (employmentType) {
+    if (employmentType?.trim()) {
         filter.employmentType = {
             $regex: employmentType.trim(),
             $options: "i"
         };
     }
     try {
-        const jobs = await Job.find(filter);
+        const pageNumber = Number(page);
+        const pageSize = Number(limit);
+
+        const skip = (pageNumber - 1) * pageSize;
+        const totalJobs = await Job.countDocuments(filter);
+        const jobs = await Job.find(filter).skip(skip).limit(limit);
         res.status(200).json(
             {
                 success: true,
+                page: pageNumber,
+                limit: pageSize,
+                totalPages: Math.ceil(totalJobs / pageSize),
                 count: jobs.length,
                 data: jobs
             }
