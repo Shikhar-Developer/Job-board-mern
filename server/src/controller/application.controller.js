@@ -118,3 +118,87 @@ export const getAllJobApplicants = async (req, res) => {
         })
     }
 }
+
+export const acceptApplication = async (req, res) => {
+    try {
+        const { applicationId } = req.params;
+        const application = await Application.findById(applicationId).populate("job");
+        if (!application) {
+            return res.status(404).json({
+                success: false,
+                message: "Application Not Found!"
+            })
+        }
+
+        if (application.job.createdBy.toString() != req.user._id.toString()) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied"
+            })
+        }
+
+        if (application.status != "PENDING") {
+            return res.status(400).json({
+                success: false,
+                message: "Application already proccessed!"
+            })
+        }
+
+        application.status = "ACCEPTED"
+        await application.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Accepted Succesfully!",
+            data: application
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: error.message || "Internal Server Error"
+        })
+    }
+}
+
+export const rejectApplication = async (req, res) => {
+    try {
+        const { applicationId } = req.params;
+        const application = await Application.findById(applicationId).populate("job");
+        if (!application) {
+            return res.status(404).json({
+                success: false,
+                message: "Application Not Found!"
+            })
+        }
+
+        if (application.job.createdBy.toString() != req.user._id.toString()) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied"
+            })
+        }
+
+        if (application.status != "PENDING") {
+            return res.status(400).json({
+                success: false,
+                message: "Application already proccessed!"
+            })
+        }
+
+        application.status = "REJECTED"
+        await application.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Accepted Succesfully!",
+            data: application
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: error.message || "Internal Server Error"
+        })
+    }
+}
