@@ -3,7 +3,7 @@ import Job from "../models/Jobs.js"
 
 export const getAllJobs = async (req, res) => {
     //Gives back a arraylist of jobs.
-    const { search, location, employmentType, page, limit } = req.query;
+    const { search, location, employmentType, page, limit, sort } = req.query;
     let filter = {};
     if (search?.trim())
         filter.$or = [
@@ -24,13 +24,29 @@ export const getAllJobs = async (req, res) => {
             $options: "i"
         };
     }
+
+    let sortOptions = {};
+    switch (sort) {
+        case "oldest":
+            sortOptions = {
+                createdAt: 1
+            }
+            break;
+
+        case "newest":
+        default:
+            sortOptions = {
+                createdAt: -1
+            }
+    }
+
     try {
         const pageNumber = Number(page);
         const pageSize = Number(limit);
 
         const skip = (pageNumber - 1) * pageSize;
         const totalJobs = await Job.countDocuments(filter);
-        const jobs = await Job.find(filter).skip(skip).limit(limit);
+        const jobs = await Job.find(filter).sort(sortOptions).skip(skip).limit(limit);
         res.status(200).json(
             {
                 success: true,
