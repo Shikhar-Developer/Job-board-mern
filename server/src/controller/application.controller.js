@@ -76,3 +76,45 @@ export const getMyApplication = async (req, res) => {
         })
     }
 }
+
+export const getAllJobApplicants = async (req, res) => {
+    try {
+        const { jobId } = req.params;
+        const job = await Job.findById(jobId);
+
+        if (!job) {
+            return res.status(404).json({
+                success: false,
+                message: "Job not found!"
+            })
+        }
+
+        //Ownership Check
+        if (job.createdBy.toString() != req.user._id) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied!"
+            })
+        }
+
+        const application = await Application.find({
+            job: jobId
+        }).populate({
+            path: "candidate",
+            select: "name email createdAt"
+        }).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            message: "All Applications fetched",
+            count: application.length,
+            data: application
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: error.message || "Internal Server Error"
+        })
+    }
+}
