@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ["EMPLOYER", "CANDIDATE"],
             required: true
+        },
+
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: User,
+            required: true
         }
     },
     {

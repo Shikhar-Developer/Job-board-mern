@@ -69,13 +69,20 @@ export const getAllJobs = async (req, res) => {
 
 export const updateJob = async (req, res) => {
     try {
-        const job = await Job.findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after", runValidators: true })
+        const job = await Job.findById(req.params.id)
         if (!job) {
             return res.status(404).json({
                 success: true,
                 message: "No user is found"
             })
         }
+        if (job.createdBy.toString() != req.user._id.toString()) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied"
+            })
+        }
+        const job = await Job.findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after", runValidators: true })
         res.status(200).json({
             success: true,
             message: "Job Updated Succesfully!",
@@ -113,7 +120,11 @@ export const findJobByID = async (req, res) => {
 
 export const createJob = async (req, res) => {
     try {
-        const job = await Job.create(req.body);
+        const job = await Job.create({
+            ...req.body,
+            createdBy: req.user._id
+        });
+
         res.status(201).json({
             success: true,
             message: "Job Created",
@@ -143,14 +154,20 @@ export const createJob = async (req, res) => {
 
 export const deleteJob = async (req, res) => {
     try {
-        const deletedJob = await Job.findByIdAndDelete(req.params.id, req.body);
-        if (!deletedJob) {
+        const job = await Job.findById(req.params.id);
+        if (!job) {
             return res.status(404).json({
                 success: false,
                 message: "Job not found"
             })
         }
-
+        if (req.user._id.toString() != job.createdBy.toString()) {
+            return res.status(403).json({
+                success: true,
+                message: "Access Denied"
+            })
+        }
+        const deletedJob = await Job.findByIdAndDelete(req.params.id, req.body);
         res.status(200).json({
             success: true,
             message: "Job deleted Succesfully",
