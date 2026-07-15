@@ -180,3 +180,22 @@ export const deleteJob = async (req, res) => {
         });
     }
 }
+
+
+export const getMyJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+        res.status(200).json({
+            success: true,
+            message: "Jobs fetched Successfully!",
+            count: jobs.length,
+            data: jobs
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal Server Error"
+        });
+    }
+}
