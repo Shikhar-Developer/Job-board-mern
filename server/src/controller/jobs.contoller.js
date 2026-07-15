@@ -3,13 +3,32 @@ import Job from "../models/Jobs.js"
 
 export const getAllJobs = async (req, res) => {
     //Gives back a arraylist of jobs.
-    const jobs = await Job.find()
-    res.json(
-        {
-            success: true,
-            data: jobs
-        }
-    )
+    const { search } = req.query;
+    let filter = {};
+    if (search)
+        filter = {
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { company: { $regex: search, $options: "i" } }
+            ]
+        };
+
+    try {
+        const jobs = await Job.find(filter);
+        res.json(
+            {
+                success: true,
+                count: jobs.length,
+                data: jobs
+            }
+        )
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
 
 };
 
