@@ -1,6 +1,7 @@
 import Application from "../models/Application.js";
 import Candidate from "../models/Candidate.js";
 import Job from "../models/Jobs.js"
+import { applicationCreated, sendApplicationAcceptedEmail, sendApplicationRejectedEmail } from "../service/email.service.js";
 
 export const applyForJob = async (req, res) => {
     try {
@@ -65,6 +66,9 @@ export const applyForJob = async (req, res) => {
             }
 
         });
+
+        //Email
+        await applicationCreated(req.body.email, req.body.name, req.body.title, req.body.company)
 
         res.status(201).json({
             success: true,
@@ -194,6 +198,10 @@ export const acceptApplication = async (req, res) => {
         application.status = "ACCEPTED"
         await application.save();
 
+        //Email Accepted
+        await sendApplicationAcceptedEmail(application.applicationDetails.email, application.applicationDetails.name, application.applicationDetails.title, application.applicationDetails.company);
+
+
         res.status(200).json({
             success: true,
             message: "Accepted Succesfully!",
@@ -235,6 +243,9 @@ export const rejectApplication = async (req, res) => {
 
         application.status = "REJECTED"
         await application.save();
+
+        //Email Rejected
+        await sendApplicationRejectedEmail(application.applicationDetails.email, application.applicationDetails.name, application.applicationDetails.title, application.applicationDetails.company);
 
         res.status(200).json({
             success: true,

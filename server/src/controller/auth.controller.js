@@ -3,6 +3,7 @@ import Candidate from "../models/Candidate.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Employer from "../models/Employer.js";
+import { registrationCompletedEmail } from "../service/email.service.js";
 
 export const register = async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -25,6 +26,10 @@ export const register = async (req, res) => {
         if (user.role == "EMPLOYER") {
             await Employer.create({ user: user._id });
         }
+
+        //Email Sending Function:
+        await registrationCompletedEmail(user.email);
+
         res.status(201).json({
             succes: true,
             message: "User Registered!",
