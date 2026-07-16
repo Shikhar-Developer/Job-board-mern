@@ -24,7 +24,7 @@ export const getCandidateProfile = async (req, res) => {
     }
 }
 
-export const updateCandidateProfile = (req, res) => {
+export const updateCandidateProfile = async (req, res) => {
     try {
 
         const { name, ...candidateData } = req.body;
