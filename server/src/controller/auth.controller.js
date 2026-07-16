@@ -1,6 +1,8 @@
 import User from "../models/User.js";
+import Candidate from "../models/Candidate.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Employer from "../models/Employer.js";
 
 export const register = async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -16,6 +18,13 @@ export const register = async (req, res) => {
         //10 Salt rounds
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, email, password: hashedPassword, role });
+        if (user.role == "CANDIDATE") {
+            await Candidate.create({ user: user._id });
+        }
+
+        if (user.role == "EMPLOYER") {
+            await Employer.create({ user: user._id });
+        }
         res.status(201).json({
             succes: true,
             message: "User Registered!",
@@ -64,6 +73,49 @@ export const login = async (req, res) => {
         res.status(500).json({
             success: false,
             message: error.message || "Internal Server error"
+        })
+    }
+}
+
+export const updatePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword } = req.body;
+        if (!oldPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Current and new Password are required!"
+            })
+        }
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found!"
+            })
+        }
+
+        const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: "Current password is incorrect"
+            })
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Password Updated Succesfully!"
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error"
         })
     }
 }

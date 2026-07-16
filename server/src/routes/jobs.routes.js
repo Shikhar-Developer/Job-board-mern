@@ -4,6 +4,7 @@ import { applyForJob, getAllJobApplicants } from "../controller/application.cont
 import Authenticator from "../middleware/auth.middleware.js";
 import authorize from "../middleware/authorize.middleware.js";
 import authRouter from "./auth.routes.js";
+import upload from "../middleware/upload.middleware.js";
 
 const router = Router()
 
@@ -17,6 +18,6 @@ router.post("/:jobId/apply", Authenticator, authorize("CANDIDATE"), applyForJob)
 router.get("/my", Authenticator, authorize("EMPLOYER"), getMyJobs);
 router.get("/", getAllJobs);
 router.get("/:id", findJobByID);
-router.get("/:jobId/applications", Authenticator, authorize("EMPLOYER"), getAllJobApplicants);
+router.get("/:jobId/applications", Authenticator, authorize("EMPLOYER"), upload.single("resume"), getAllJobApplicants);
 
 export default router

@@ -5,7 +5,7 @@ export const getEmployeeDashboard = async (req, res) => {
     try {
         const jobs = await Job.find({ createdBy: req.user._id });
         const jobIds = jobs.map((job) => job._id);
-        const applications = await Application.find({ job: { $in: { jobIds } } });
+        const applications = await Application.find({ job: { $in: jobIds } });
 
         const pendingApplications = applications.filter((application) => application.status === "PENDING").length;
         const acceptedApplications = applications.filter(application => application.status === "ACCEPTED").length;

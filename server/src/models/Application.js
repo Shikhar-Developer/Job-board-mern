@@ -1,5 +1,37 @@
 import mongoose from "mongoose";
 
+const applicationDetailsSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true
+        },
+
+        email: {
+            type: String,
+            required: true
+        },
+
+        phoneNumber: String,
+        address: String,
+        city: String,
+        state: String,
+        country: String,
+        highestQualification: String,
+        passingYear: Number,
+        college: String,
+        university: String,
+        branch: String,
+        cgpa: Number,
+        experience: Number,
+        skills: [{ type: String }]
+    },
+    {
+        _id: false
+    }
+);
+
+
 // Class Schema of mongoose Library
 const ApplicationSchema = new mongoose.Schema(
     {
@@ -11,15 +43,29 @@ const ApplicationSchema = new mongoose.Schema(
 
         candidate: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Candidate",
             required: true
+        },
+
+        resume: {
+            type: String,
+            required: true
+        },
+
+        message: {
+            type: String,
+            trim: true,
+            maxlength: 1000,
+            default: ""
         },
 
         status: {
             type: String,
             enum: ["PENDING", "ACCEPTED", "REJECTED"],
             default: "PENDING"
-        }
+        },
+
+        applicationDetails: applicationDetailsSchema
     },
     {
         timestamps: true
