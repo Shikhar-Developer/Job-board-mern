@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+    --color-tangerine-dream-50: #feeee7;
+    --color-tangerine-dream-100: #fcdccf;
+    --color-tangerine-dream-200: #f9ba9f;
+    --color-tangerine-dream-300: #f7976e;
+    --color-tangerine-dream-400: #f4753e;
+    --color-tangerine-dream-500: #f1520e;
+    --color-tangerine-dream-600: #c1420b;
+    --color-tangerine-dream-700: #913108;
+    --color-tangerine-dream-800: #602106;
+    --color-tangerine-dream-900: #301003;
+    --color-tangerine-dream-950: #220b02;
+
+    --color-apricot-cream-50: #fdf6e7;
+    --color-apricot-cream-100: #fceccf;
+    --color-apricot-cream-200: #f8d9a0;
+    --color-apricot-cream-300: #f5c670;
+    --color-apricot-cream-400: #f2b440;
+    --color-apricot-cream-500: #eea111;
+    --color-apricot-cream-600: #bf810d;
+    --color-apricot-cream-700: #8f600a;
+    --color-apricot-cream-800: #5f4007;
+    --color-apricot-cream-900: #302003;
+    --color-apricot-cream-950: #211702;
+
+    --color-lime-cream-50: #f9fce9;
+    --color-lime-cream-100: #f3f8d3;
+    --color-lime-cream-200: #e6f2a6;
+    --color-lime-cream-300: #daeb7a;
+    --color-lime-cream-400: #cee44e;
+    --color-lime-cream-500: #c2de21;
+    --color-lime-cream-600: #9bb11b;
+    --color-lime-cream-700: #748514;
+    --color-lime-cream-800: #4d590d;
+    --color-lime-cream-900: #272c07;
+    --color-lime-cream-950: #1b1f05;
+
+    --color-dark-teal-50: #e5f9ff;
+    --color-dark-teal-100: #ccf4ff;
+    --color-dark-teal-200: #99e9ff;
+    --color-dark-teal-300: #66deff;
+    --color-dark-teal-400: #33d3ff;
+    --color-dark-teal-500: #00c8ff;
+    --color-dark-teal-600: #00a0cc;
+    --color-dark-teal-700: #007899;
+    --color-dark-teal-800: #005066;
+    --color-dark-teal-900: #002833;
+    --color-dark-teal-950: #001c24;
+
+    --color-turquoise-surf-50: #e5faff;
+    --color-turquoise-surf-100: #ccf5ff;
+    --color-turquoise-surf-200: #99ebff;
+    --color-turquoise-surf-300: #66e0ff;
+    --color-turquoise-surf-400: #33d6ff;
+    --color-turquoise-surf-500: #00ccff;
+    --color-turquoise-surf-600: #00a3cc;
+    --color-turquoise-surf-700: #007a99;
+    --color-turquoise-surf-800: #005266;
+    --color-turquoise-surf-900: #002933;
+    --color-turquoise-surf-950: #001d24;
+
+}
