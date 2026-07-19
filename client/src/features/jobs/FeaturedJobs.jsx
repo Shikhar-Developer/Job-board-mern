@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import JobCard from "../../components/JobCard/JobCard.jsx";
-import { getAllJobs } from "../../service/jobServices.js";
+import { getAllJobs } from "../../services/job.services.js";
 import Loader from "../../components/Loader/Loader.jsx";
 
 const FeaturedJobs = () => {

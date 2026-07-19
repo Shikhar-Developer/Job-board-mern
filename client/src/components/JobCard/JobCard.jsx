@@ -20,7 +20,7 @@ const JobCard = ({ company, title, location, salary, type, skills }) => {
                 })}
             </div>
             <div className="mt-8">
-                <Button text="Apply Now" />
+                <Button>Apply Now</Button>
             </div>
 
         </div>

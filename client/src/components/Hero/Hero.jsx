@@ -9,8 +9,8 @@ const Hero = () => {
                 <h1 className="text-5xl font-bold mt-4">Find Your Dream Job</h1>
                 <p className="text-lg mt-6">Discover thousands of Oppurtunity from Trusted Companies.</p>
                 <div className="flex justify-center gap-4 mt-8">
-                    <Button text="Browse Jobs" />
-                    <Button text="Hire Talent" />
+                    <Button>Browse Jobs</Button>
+                    <Button>Hire Talent</Button>
                 </div>
             </div>
         </section>
