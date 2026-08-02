@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 
-const JobCard = ({ company, title, location, salary, type, skills }) => {
+const JobCard = ({ id, company, title, location, salary, type, skills }) => {
     return (
         <div className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
             <div className=" flex justify-between items-center">
@@ -15,14 +16,15 @@ const JobCard = ({ company, title, location, salary, type, skills }) => {
                 }
             </p>
             <div className="flex flex-wrap gap-2 mt-6">
-                {skills?.map((skill) => {
+                {skills?.map((skill) => (
                     <span key={skill} className="bg-slate-100 text-gray-700 px-3 py-1 rounded-full text-sm">{skill}</span>
-                })}
+                ))}
             </div>
             <div className="mt-8">
-                <Button>Apply Now</Button>
+                <Link to={`/jobs/${id}`}>
+                    <Button>View Details</Button>
+                </Link>
             </div>
-
         </div>
     )
 };

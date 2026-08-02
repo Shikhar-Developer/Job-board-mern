@@ -16,8 +16,6 @@ const FeaturedJobs = () => {
                     limit: 6,
                     sort: "newest"
                 });
-                console.log(response.data);
-
                 setJobs(response.data);
             } catch (error) {
                 setError("Unable to load jobs!")
@@ -45,7 +43,6 @@ const FeaturedJobs = () => {
     }
 
     return (
-
         <section className="py-20 bg-slate-50">
             <div className="max-w-7xl mx-auto px-6">
                 <h2 className="text-4xl font-bold text-center">Featured Jobs</h2>
@@ -55,12 +52,13 @@ const FeaturedJobs = () => {
                         jobs.map(job => (
                             <JobCard
                                 key={job._id}
+                                id={job._id}
                                 company={job.company}
                                 title={job.title}
                                 location={job.location}
                                 salary={job.salary}
                                 type={job.employmentType}
-                                skills={job.requirement}
+                                skills={job.requirements}
                             />
                         ))
                     }
@@ -72,8 +70,3 @@ const FeaturedJobs = () => {
 };
 
 export default FeaturedJobs;
-
-
-
-
-

@@ -10,10 +10,35 @@ export const getCandidateProfile = async (req, res) => {
             })
         }
 
+        const fields = [
+            candidate.phoneNumber, candidate.address, candidate.city,
+            candidate.state, candidate.country, candidate.highestQualification,
+            candidate.passingYear, candidate.college, candidate.university,
+            candidate.branch, candidate.cgpa, candidate.experience,
+            candidate.linkedin, candidate.github, candidate.portfolio
+        ];
+
+        let filledCount = 0;
+        fields.forEach(value => {
+            if (value !== undefined && value !== null && value !== "") {
+                filledCount++;
+            }
+        });
+
+        if (candidate.skills && candidate.skills.length > 0) {
+            filledCount++;
+        }
+
+        const totalFields = 16;
+        const completionPercentage = (filledCount / totalFields) * 100;
+
+        const profileCompleted = completionPercentage > 80;
+
         res.status(200).json({
             success: true,
             message: "Candidate found!",
-            data: candidate
+            data: candidate,
+            profileCompleted: profileCompleted
         })
 
     } catch (error) {

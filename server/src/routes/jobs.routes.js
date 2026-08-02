@@ -12,12 +12,12 @@ const router = Router()
 router.post("/", Authenticator, authorize("EMPLOYER"), createJob);
 router.put("/:id", Authenticator, authorize("EMPLOYER"), updateJob);
 router.delete("/:id", Authenticator, authorize("EMPLOYER"), deleteJob);
-router.post("/:jobId/apply", Authenticator, authorize("CANDIDATE"), applyForJob);
+router.post("/:jobId/apply", Authenticator, authorize("CANDIDATE"), upload.single("resume"), applyForJob);
 
 
 router.get("/my", Authenticator, authorize("EMPLOYER"), getMyJobs);
 router.get("/", getAllJobs);
 router.get("/:id", findJobByID);
-router.get("/:jobId/applications", Authenticator, authorize("EMPLOYER"), upload.single("resume"), getAllJobApplicants);
+router.get("/:jobId/applications", Authenticator, authorize("EMPLOYER"), getAllJobApplicants);
 
 export default router

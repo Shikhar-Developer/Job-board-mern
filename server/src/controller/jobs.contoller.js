@@ -41,8 +41,8 @@ export const getAllJobs = async (req, res) => {
     }
 
     try {
-        const pageNumber = Number(page);
-        const pageSize = Number(limit);
+        const pageNumber = Number(page) || 1;
+        const pageSize = Number(limit) || 10;
 
         const skip = (pageNumber - 1) * pageSize;
         const totalJobs = await Job.countDocuments(filter);
