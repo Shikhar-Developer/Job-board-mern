@@ -1,4 +1,6 @@
+// server/src/controller/candidate.controller.js
 import Candidate from "../models/Candidate.js"
+import User from "../models/User.js"
 
 export const getCandidateProfile = async (req, res) => {
     try {
@@ -43,7 +45,7 @@ export const getCandidateProfile = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: error.message || "Internal Server Error"
         })
     }
@@ -66,7 +68,7 @@ export const updateCandidateProfile = async (req, res) => {
 
         if (!candidate) {
             return res.status(404).json({
-                success: true,
+                success: false,
                 message: "Candidate not found!"
             })
         }
@@ -83,4 +85,4 @@ export const updateCandidateProfile = async (req, res) => {
             message: error.message || "Internal Server error"
         })
     }
-} 
+}

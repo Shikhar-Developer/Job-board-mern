@@ -1,17 +1,16 @@
+// server/src/middleware/upload.middleware.js
 import multer from "multer"
 import path from "path"
 
 const storage = multer.diskStorage({
-    destination(req, File, cb) {
+    destination(req, file, cb) {
         cb(null, "uploads/resumes");
-    }
-}, {
+    },
     filename(req, file, cb) {
         const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1E9);
         cb(null, uniqueName + path.extname(file.originalname));
     }
-}
-)
+});
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === "application/pdf")

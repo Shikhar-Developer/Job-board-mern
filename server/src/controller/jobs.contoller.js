@@ -1,3 +1,4 @@
+// server/src/controller/jobs.contoller.js
 import Job from "../models/Jobs.js"
 
 
@@ -72,17 +73,19 @@ export const updateJob = async (req, res) => {
         const currentJob = await Job.findById(req.params.id)
         if (!currentJob) {
             return res.status(404).json({
-                success: true,
-                message: "No user is found"
+                success: false,
+                message: "No Job Found"
             })
         }
-        if (job.createdBy.toString() != req.user._id.toString()) {
+
+        if (currentJob.createdBy.toString() != req.user._id.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied"
             })
         }
-        const job = await Job.findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after", runValidators: true })
+
+        const job = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
         res.status(200).json({
             success: true,
             message: "Job Updated Succesfully!",
@@ -91,7 +94,7 @@ export const updateJob = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: "Server is Down!"
+            message: error.message || "Server is Down!"
         })
     }
 }
@@ -163,11 +166,11 @@ export const deleteJob = async (req, res) => {
         }
         if (req.user._id.toString() != job.createdBy.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied"
             })
         }
-        const deletedJob = await Job.findByIdAndDelete(req.params.id, req.body);
+        const deletedJob = await Job.findByIdAndDelete(req.params.id);
         res.status(200).json({
             success: true,
             message: "Job deleted Succesfully",

@@ -1,3 +1,4 @@
+// server/src/controller/application.controller.js
 import Application from "../models/Application.js";
 import Candidate from "../models/Candidate.js";
 import Job from "../models/Jobs.js"
@@ -68,7 +69,7 @@ export const applyForJob = async (req, res) => {
         });
 
         //Email
-        await applicationCreated(req.body.email, req.body.name, req.body.title, req.body.company)
+        await applicationCreated(req.body.email, req.body.name, job.title, job.company);
 
         res.status(201).json({
             success: true,
@@ -90,11 +91,11 @@ export const getMyApplication = async (req, res) => {
     try {
         const { page, limit } = req.query;
 
-        const pageNumber = Number(page);
-        const pageSize = Number(limit)
+        const pageNumber = Number(page) || 1;
+        const pageSize = Number(limit) || 10;
         const skip = (pageNumber - 1) * pageSize
 
-        const candidate = await Candidate.findOne({ user: req.user_id });
+        const candidate = await Candidate.findOne({ user: req.user._id });
         if (!candidate) {
             return res.status(404).json({
                 success: false,
@@ -122,7 +123,7 @@ export const getMyApplication = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: error.message || "Internal Server Error"
         })
     }
@@ -143,7 +144,7 @@ export const getAllJobApplicants = async (req, res) => {
         //Ownership Check
         if (job.createdBy.toString() !== req.user._id.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied!"
             })
         }
@@ -164,7 +165,7 @@ export const getAllJobApplicants = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: error.message || "Internal Server Error"
         })
     }
@@ -183,7 +184,7 @@ export const acceptApplication = async (req, res) => {
 
         if (application.job.createdBy.toString() != req.user._id.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied"
             })
         }
@@ -199,7 +200,12 @@ export const acceptApplication = async (req, res) => {
         await application.save();
 
         //Email Accepted
-        await sendApplicationAcceptedEmail(application.applicationDetails.email, application.applicationDetails.name, application.applicationDetails.title, application.applicationDetails.company);
+        await sendApplicationAcceptedEmail(
+            application.applicationDetails.email,
+            application.applicationDetails.name,
+            application.job.title,
+            application.job.company
+        );
 
 
         res.status(200).json({
@@ -210,7 +216,7 @@ export const acceptApplication = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: error.message || "Internal Server Error"
         })
     }
@@ -229,7 +235,7 @@ export const rejectApplication = async (req, res) => {
 
         if (application.job.createdBy.toString() != req.user._id.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied"
             })
         }
@@ -245,7 +251,12 @@ export const rejectApplication = async (req, res) => {
         await application.save();
 
         //Email Rejected
-        await sendApplicationRejectedEmail(application.applicationDetails.email, application.applicationDetails.name, application.applicationDetails.title, application.applicationDetails.company);
+        await sendApplicationRejectedEmail(
+            application.applicationDetails.email,
+            application.applicationDetails.name,
+            application.job.title,
+            application.job.company
+        );
 
         res.status(200).json({
             success: true,
@@ -255,7 +266,7 @@ export const rejectApplication = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: error.message || "Internal Server Error"
         })
     }
@@ -267,7 +278,7 @@ export const withdrawApplication = async (req, res) => {
         const { applicationId } = req.params;
         const application = await Application.findById(applicationId);
         if (!application) {
-            return res, status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Application not found!"
             })
@@ -282,9 +293,9 @@ export const withdrawApplication = async (req, res) => {
             });
         }
 
-        if (application.candidate.toString() !== req.candidate._id) {
+        if (application.candidate.toString() !== candidate._id.toString()) {
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: "Access Denied"
             })
         }
@@ -298,7 +309,7 @@ export const withdrawApplication = async (req, res) => {
 
         await application.deleteOne();
 
-        res.staus(200).json({
+        res.status(200).json({
             success: true,
             message: "Application Withdrawn Successfully"
         })
