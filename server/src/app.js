@@ -1,4 +1,6 @@
+// server/src/app.js
 import express from "express"
+import cors from "cors"
 import jobRouter from "./routes/jobs.routes.js"
 import authRouter from "./routes/auth.routes.js"
 import errorHandler from "./middleware/error.middleware.js"
@@ -8,7 +10,6 @@ import candidateRouter from "./routes/candidate.routes.js"
 import employerRouter from "./routes/employer.routes.js"
 import path from "path"
 import { fileURLToPath } from "url"
-import cors from "cors";
 
 
 
@@ -18,10 +19,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     credentials: true
-}));
-
+}))
 app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 

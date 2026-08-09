@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader/Loader.jsx";
 import Button from "../../components/Button/Button.jsx";
-import DashboardStats from "../../features/dashboard/DashboardStats.js";
+import DashboardStats from "../../features/dashboard/DashboardStats.jsxs";
 import { getEmployerDashboard } from "../../services/dashboard.service.js";
 
 const EmployerDashboardPage = () => {
