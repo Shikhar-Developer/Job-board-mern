@@ -123,6 +123,9 @@ export const findJobByID = async (req, res) => {
 }
 
 export const createJob = async (req, res) => {
+    console.log("🔥 createJob reached");
+    console.log("USER:", req.user);
+    console.log("BODY:", req.body);
     try {
         const job = await Job.create({
             ...req.body,
