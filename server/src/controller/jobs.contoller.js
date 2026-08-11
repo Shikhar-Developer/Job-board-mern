@@ -4,6 +4,7 @@ import Job from "../models/Jobs.js"
 
 export const getAllJobs = async (req, res) => {
     //Gives back a arraylist of jobs.
+    console.log("🔥 getAllJobs reached", req.query);
     const { search, location, employmentType, page, limit, sort } = req.query;
     let filter = {};
     if (search?.trim())
