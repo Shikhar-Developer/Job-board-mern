@@ -20,9 +20,10 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Allow the deployed frontend
 app.use(
     cors({
-        origin: process.env.CLIENT_URL,
+        origin: "https://job-board-mern-tau.vercel.app",
         credentials: true
     })
 );
