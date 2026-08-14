@@ -45,7 +45,7 @@ export const applyForJob = async (req, res) => {
         const application = await Application.create({
             job: jobId,
             candidate: candidateId,
-            resume: req.file.path,
+            resume: req.file.filename,
             message: req.body.message || "",
 
             applicationDetails: {
