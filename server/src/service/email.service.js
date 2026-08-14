@@ -1,35 +1,36 @@
 import nodemailer from "nodemailer";
 
-export const sendEmail = async ({ to, subject, html }) => {
-    // Read the exact variables your .env file uses
-    const senderEmail = process.env.PORTAL_EMAIL;
-    const senderPassword = process.env.PORTAL_EMAIL_PASSWORD;
+export const sendEmail = ({ to, subject, html }) => { return }
+// export const sendEmail = async ({ to, subject, html }) => {
+//     // Read the exact variables your .env file uses
+//     const senderEmail = process.env.PORTAL_EMAIL;
+//     const senderPassword = process.env.PORTAL_EMAIL_PASSWORD;
 
-    const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: senderEmail,
-            pass: senderPassword
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
+//     const transporter = nodemailer.createTransport({
+//         host: "smtp.gmail.com",
+//         port: 587,
+//         secure: false,
+//         auth: {
+//             user: senderEmail,
+//             pass: senderPassword
+//         },
+//         tls: {
+//             rejectUnauthorized: false
+//         }
+//     });
 
-    try {
-        const info = await transporter.sendMail({
-            from: `"Job Portal" <${senderEmail}>`,
-            to,
-            subject,
-            html
-        });
+//     try {
+//         const info = await transporter.sendMail({
+//             from: `"Job Portal" <${senderEmail}>`,
+//             to,
+//             subject,
+//             html
+//         });
 
-    } catch (error) {
-        console.error("Email Delivery Failed! Error Details:", error.message);
-    }
-};
+//     } catch (error) {
+//         console.error("Email Delivery Failed! Error Details:", error.message);
+//     }
+// };
 
 export const registrationCompletedEmail = async (to) => {
     try {
